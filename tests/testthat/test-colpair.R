@@ -23,3 +23,8 @@ test_that("colpair_map() masks argument names", {
                correlate(my_mtcars, quiet = TRUE),
                tolerance = 1e-10)
 })
+
+test_that("colpair_map() retaines mapped function name when streched", {
+
+  expect_equal(names(stretch(colpair_map(mtcars, cov)))[3], "cov")
+})

@@ -64,7 +64,11 @@ correlate.default <- function(x, y = NULL,
     message("\nCorrelation method: '", method, "'",
             "\nMissing treated using: '", use, "'\n")
 
-  as_cordf(x, diagonal = diagonal)
+  out <- as_cordf(x, diagonal = diagonal)
+
+  attr(out, "fn_name") <- "r"
+
+  out
 }
 
 #' @export

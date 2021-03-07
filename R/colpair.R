@@ -28,8 +28,13 @@ colpair_map <- function(.data, .f, ..., .diagonal = NA){
 
   out <- purrr::map_dfr(.data, summarise_col, {{ .f }}, .data, ...)
 
-  as_cordf(out, diagonal = .diagonal)
+  out <- as_cordf(out, diagonal = .diagonal)
 
+  fn_name_str <- capture_fn_name(rlang::enexpr(.f))
+
+  attr(out, "fn_name") <- if(fn_name_str == "cor") "r" else fn_name_str
+
+  out
 }
 
 #' Summarise a column
@@ -50,4 +55,9 @@ summarise_col <- function(.x, .f, .data, ...){
                                        .fns = {{ .f }},
                                        {{ .x }},
                                        ...))
+}
+
+capture_fn_name <- function(fn_name){
+
+  rlang::call_name(rlang::call2(fn_name))
 }
